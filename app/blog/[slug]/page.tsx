@@ -7,9 +7,9 @@ import html from 'remark-html';
 import Link from 'next/link';
 
 interface BlogPostProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getPost(slug: string) {
@@ -55,7 +55,8 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPost({ params }: BlogPostProps) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
