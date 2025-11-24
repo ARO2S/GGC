@@ -1,0 +1,74 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Optional: Use local backend for development
+# Run: npx netlify-cms-proxy-server
+local_backend: true
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # Blog Posts Collection
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # 2025 Programs Collection
+  - name: "programs-2025"
+    label: "2025 Programs"
+    folder: "content/programs/2025"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  # 2026 Programs Collection
+  - name: "programs-2026"
+    label: "2026 Programs"
+    folder: "content/programs/2026"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  # Pages Collection
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "History Page"
+        name: "history"
+        file: "content/pages/history.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string", default: "Our History" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      
+      - label: "Home Page Sections"
+        name: "home"
+        file: "content/pages/home.md"
+        fields:
+          - { label: "Hero Title", name: "hero_title", widget: "string" }
+          - { label: "Hero Subtitle", name: "hero_subtitle", widget: "string" }
+          - { label: "About Section", name: "about", widget: "markdown" }
+          - { label: "Featured Message", name: "featured_message", widget: "text", required: false }
+
