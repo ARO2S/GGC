@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Navigation() {
@@ -22,8 +23,17 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Title */}
           <div className="flex-shrink-0">
-            <Link href="/" className="text-xl sm:text-2xl font-bold text-white hover:text-garden-100 transition-colors">
-              Greenville Garden Club
+            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+              <Image 
+                src="/images/logo.png" 
+                alt="Greenville Garden Club Logo" 
+                width={48} 
+                height={48}
+                className="h-12 w-12 object-contain"
+              />
+              <span className="text-xl sm:text-2xl font-bold text-white">
+                Greenville Garden Club
+              </span>
             </Link>
           </div>
 

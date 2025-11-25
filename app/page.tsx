@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Hero from '@/components/Hero';
+import PhotoGallery from '@/components/PhotoGallery';
 
 export default function Home() {
   return (
@@ -83,6 +84,9 @@ export default function Home() {
             </Link>
           </div>
         </section>
+
+        {/* Photo Gallery */}
+        <PhotoGallery />
 
         {/* Latest Blog Posts Preview */}
         <section>

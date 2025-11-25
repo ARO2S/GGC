@@ -9,6 +9,13 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Greenville Garden Club",
   description: "An active gardening community with programs and activities for all levels of interest and experience.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/images/logo.png', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
