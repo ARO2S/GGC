@@ -9,12 +9,13 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirects for SPA
+# Redirects for SPA (GET only — POST must reach Netlify Forms)
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
   force = false
+  conditions = {Method = ["GET", "HEAD"]}
 
 # Enable Netlify Identity for CMS authentication
 [build.processing]

@@ -23,9 +23,13 @@ export default function PlantQuestions() {
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set('form-name', 'plant-questions');
-    const body = new URLSearchParams(formData as unknown as Record<string, string>).toString();
+    const params = new URLSearchParams();
+    formData.forEach((value, key) => {
+      params.append(key, value.toString());
+    });
+    const body = params.toString();
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/plant-questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
@@ -44,12 +48,12 @@ export default function PlantQuestions() {
       <>
         <Hero title="Thank You!" subtitle="Your question has been received" />
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="bg-white text-gray-900 rounded-lg shadow-lg p-8 text-center">
             <svg className="h-16 w-16 text-garden-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Question Submitted Successfully!</h2>
-            <p className="text-gray-700 mb-6">
+            <p className="text-gray-900 mb-6">
               Thank you for your question! One of our experienced club members will review it and 
               get back to you as soon as possible.
             </p>
@@ -70,10 +74,10 @@ export default function PlantQuestions() {
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-garden-800 mb-4">Get Expert Advice</h2>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-900 leading-relaxed">
               Do you have questions about plant care, pest problems, garden design, or any other 
               gardening topic? Our club members have decades of combined experience and are happy 
               to share their knowledge. Submit your question below and we'll get back to you with 
@@ -98,7 +102,7 @@ export default function PlantQuestions() {
             </p>
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
                 Your Name *
               </label>
               <input
@@ -106,12 +110,12 @@ export default function PlantQuestions() {
                 id="name"
                 name="name"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
                 Email Address *
               </label>
               <input
@@ -119,12 +123,12 @@ export default function PlantQuestions() {
                 id="email"
                 name="email"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white"
               />
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="subject" className="block text-sm font-medium text-gray-900 mb-2">
                 Subject *
               </label>
               <input
@@ -133,12 +137,12 @@ export default function PlantQuestions() {
                 name="subject"
                 required
                 placeholder="e.g., Yellow leaves on tomato plants"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white"
               />
             </div>
 
             <div>
-              <label htmlFor="question" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="question" className="block text-sm font-medium text-gray-900 mb-2">
                 Your Question *
               </label>
               <textarea
@@ -147,15 +151,15 @@ export default function PlantQuestions() {
                 required
                 rows={6}
                 placeholder="Please provide as much detail as possible about your plant or gardening question..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white"
               ></textarea>
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-600">
                 Tip: Include information like plant type, location, watering schedule, and any visible symptoms
               </p>
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-900 mb-2">
                 Your Location (City, State)
               </label>
               <input
@@ -163,9 +167,9 @@ export default function PlantQuestions() {
                 id="location"
                 name="location"
                 placeholder="e.g., Greenville, IL"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white"
               />
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-600">
                 Helps us provide advice specific to your growing zone
               </p>
             </div>
@@ -186,7 +190,7 @@ export default function PlantQuestions() {
               </button>
             </div>
 
-            <p className="text-sm text-gray-600 text-center">
+            <p className="text-sm text-gray-900 text-center">
               * Required fields
             </p>
           </form>
@@ -194,7 +198,7 @@ export default function PlantQuestions() {
 
         <div className="mt-8 bg-garden-50 rounded-lg p-6 border-l-4 border-garden-600">
           <h3 className="font-semibold text-garden-800 mb-2">Response Time</h3>
-          <p className="text-gray-700 text-sm">
+          <p className="text-gray-900 text-sm">
             We typically respond to questions within 2-3 business days. For urgent plant problems, 
             consider bringing a sample to one of our monthly meetings for immediate assistance.
           </p>

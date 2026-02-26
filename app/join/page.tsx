@@ -29,10 +29,14 @@ export default function Join() {
     const form = e.currentTarget;
     const formData = new FormData(form);
     formData.set('form-name', 'membership');
-    const body = new URLSearchParams(formData as unknown as Record<string, string>).toString();
+    const params = new URLSearchParams();
+    formData.forEach((value, key) => {
+      params.append(key, value.toString());
+    });
+    const body = params.toString();
 
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
