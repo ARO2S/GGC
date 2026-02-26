@@ -1,14 +1,42 @@
 'use client';
 
 import Hero from '@/components/Hero';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+
+const MIN_SECONDS_ON_PAGE = 3;
 
 export default function PlantQuestions() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const loadTimeRef = useRef<number>(Date.now());
 
-  const handleSubmit = (e: React.FormEvent) => {
-    // Form will be handled by Netlify
-    setSubmitted(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    const secondsOnPage = (Date.now() - loadTimeRef.current) / 1000;
+    if (secondsOnPage < MIN_SECONDS_ON_PAGE) {
+      setError('Please take a moment to complete the form before submitting.');
+      return;
+    }
+    setSubmitting(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    formData.set('form-name', 'plant-questions');
+    const body = new URLSearchParams(formData as unknown as Record<string, string>).toString();
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setSubmitted(true);
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -57,6 +85,7 @@ export default function PlantQuestions() {
             name="plant-questions" 
             method="POST" 
             data-netlify="true"
+            data-netlify-recaptcha="true"
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -141,12 +170,19 @@ export default function PlantQuestions() {
               </p>
             </div>
 
+            <div data-netlify-recaptcha></div>
+
+            {error && (
+              <p className="text-red-600 text-sm">{error}</p>
+            )}
+
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-garden-600 text-white font-semibold rounded-lg hover:bg-garden-700 focus:outline-none focus:ring-2 focus:ring-garden-500 focus:ring-offset-2 transition-colors"
+                disabled={submitting}
+                className="w-full px-6 py-3 bg-garden-600 text-white font-semibold rounded-lg hover:bg-garden-700 focus:outline-none focus:ring-2 focus:ring-garden-500 focus:ring-offset-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Submit Question
+                {submitting ? 'Sending…' : 'Submit Question'}
               </button>
             </div>
 

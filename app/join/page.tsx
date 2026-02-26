@@ -1,7 +1,9 @@
 'use client';
 
 import Hero from '@/components/Hero';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+
+const MIN_SECONDS_ON_PAGE = 3;
 
 const inputClass =
   'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white';
@@ -13,10 +15,16 @@ export default function Join() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [membershipType, setMembershipType] = useState<'new' | 'renew'>('new');
+  const loadTimeRef = useRef<number>(Date.now());
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    const secondsOnPage = (Date.now() - loadTimeRef.current) / 1000;
+    if (secondsOnPage < MIN_SECONDS_ON_PAGE) {
+      setError('Please take a moment to complete the form before submitting.');
+      return;
+    }
     setSubmitting(true);
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -70,6 +78,7 @@ export default function Join() {
             name="membership"
             method="POST"
             data-netlify="true"
+            data-netlify-recaptcha="true"
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -186,6 +195,8 @@ export default function Join() {
               <p className="font-medium text-gray-900 mb-1">Mail with dues to:</p>
               <p>Donna Bristow<br />1406 Killarney Dr.<br />Greenville, IL 62246</p>
             </div>
+
+            <div data-netlify-recaptcha></div>
 
             {error && (
               <p className="text-red-600 text-sm">{error}</p>

@@ -68,6 +68,8 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-garden-700 text-center text-sm text-garden-100">
           <p>&copy; {currentYear} Greenville Garden Club. All rights reserved.</p>
+          {/* Hidden link so Netlify's form crawler can find the static form registration page */}
+          <Link href="/netlify-forms.html" className="sr-only" aria-hidden>Form registration</Link>
         </div>
       </div>
     </footer>
