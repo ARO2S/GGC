@@ -8,6 +8,7 @@ export default function Home() {
       <Hero 
         title="Welcome to the Greenville Garden Club"
         subtitle="An active gardening community with programs and activities for all levels of interest and experience"
+        showLogo
       />
 
       {/* Main Content */}

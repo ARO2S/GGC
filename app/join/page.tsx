@@ -3,27 +3,53 @@
 import Hero from '@/components/Hero';
 import { useState } from 'react';
 
+const inputClass =
+  'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent text-gray-900 bg-white';
+const labelClass = 'block text-sm font-medium text-gray-900 mb-2';
+const radioClass = 'h-4 w-4 text-garden-600 focus:ring-garden-500 border-gray-300';
+
 export default function Join() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [membershipType, setMembershipType] = useState<'new' | 'renew'>('new');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    // Form will be handled by Netlify
-    setSubmitted(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    formData.set('form-name', 'membership');
+    const body = new URLSearchParams(formData as unknown as Record<string, string>).toString();
+
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setSubmitted(true);
+    } catch {
+      setError('Something went wrong. Please try again or mail the form to the address below.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
     return (
       <>
-        <Hero title="Thank You!" subtitle="We've received your membership application" />
+        <Hero title="Thank You!" subtitle="We've received your membership information" />
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="bg-white text-gray-900 rounded-lg shadow-lg p-8 text-center">
             <svg className="h-16 w-16 text-garden-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Application Submitted Successfully!</h2>
-            <p className="text-gray-700 mb-6">
-              Thank you for your interest in joining the Greenville Garden Club. A club officer will 
-              review your application and contact you soon.
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Submitted Successfully!</h2>
+            <p className="text-gray-900 mb-6">
+              Thank you for your interest in the Greenville Garden Club. A club officer will review your information and contact you soon.
             </p>
             <a href="/" className="inline-block px-6 py-3 bg-garden-600 text-white rounded-lg hover:bg-garden-700 transition-colors">
               Return to Home
@@ -36,52 +62,13 @@ export default function Join() {
 
   return (
     <>
-      <Hero 
-        title="Join Our Club"
-        subtitle="Become part of our gardening community"
-      />
+      <Hero title="Become a Member" subtitle="Greenville Garden Club" />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-garden-800 mb-4">Membership Benefits</h2>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-garden-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Access to monthly educational programs and workshops
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-garden-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Participation in community beautification projects
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-garden-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Early access to plant sales and special events
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-garden-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Connect with fellow gardening enthusiasts
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-garden-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Members-only newsletter with gardening tips and club updates
-              </li>
-            </ul>
-          </div>
-
-          <form 
-            name="membership" 
-            method="POST" 
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
+          <form
+            name="membership"
+            method="POST"
             data-netlify="true"
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
@@ -94,157 +81,128 @@ export default function Join() {
               </label>
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                  First Name *
+            {/* 1. New Membership / Renew Membership */}
+            <div>
+              <p className={labelClass}>1. Please check.</p>
+              <div className="flex flex-wrap gap-6">
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="membershipType" value="New Membership" className={radioClass} defaultChecked onChange={() => setMembershipType('new')} />
+                  <span>New Membership</span>
                 </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Last Name *
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="membershipType" value="Renew Membership" className={radioClass} onChange={() => setMembershipType('renew')} />
+                  <span>Renew Membership</span>
                 </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-                />
               </div>
             </div>
 
+            {/* 2. Membership status */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                Street Address *
-              </label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                  City *
+              <p className={labelClass}>2. Which membership status do you wish?</p>
+              <div className="flex flex-wrap gap-6">
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="membershipStatus" value="Standard $5/Yr" className={radioClass} defaultChecked />
+                  <span>Standard $5/Yr</span>
                 </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-2">
-                  State *
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="membershipStatus" value="Junior $0 (High School or lower)" className={radioClass} />
+                  <span>Junior $0 (High School or lower)</span>
                 </label>
-                <input
-                  type="text"
-                  id="state"
-                  name="state"
-                  required
-                  maxLength={2}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="zip" className="block text-sm font-medium text-gray-700 mb-2">
-                  ZIP Code *
-                </label>
-                <input
-                  type="text"
-                  id="zip"
-                  name="zip"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-                />
               </div>
             </div>
 
-            <div>
-              <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
-                Gardening Interests
-              </label>
-              <textarea
-                id="interests"
-                name="interests"
-                rows={4}
-                placeholder="Tell us about your gardening experience and what you hope to learn..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-garden-500 focus:border-transparent"
-              ></textarea>
+            {/* 3. If renewing, change from last year? */}
+            <div className={membershipType === 'renew' ? '' : 'hidden'}>
+              <p className={labelClass}>3. If renewing, is this a change from last year?</p>
+              <div className="flex flex-wrap gap-6">
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="changeFromLastYear" value="Yes" className={radioClass} />
+                  <span>Yes</span>
+                </label>
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="changeFromLastYear" value="No" className={radioClass} />
+                  <span>No</span>
+                </label>
+              </div>
             </div>
 
-            <div>
-              <label className="flex items-start">
-                <input
-                  type="checkbox"
-                  name="volunteer"
-                  className="mt-1 h-4 w-4 text-garden-600 focus:ring-garden-500 border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm text-gray-700">
-                  I'm interested in volunteering for club projects and events
-                </span>
-              </label>
+            {/* 4. New Member or Renewing with Changes – Please complete */}
+            <div className="pt-2 border-t border-gray-200">
+              <p className="text-sm font-medium text-gray-900 mb-4">
+                4. New member or renewing with changes — please complete
+              </p>
+
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="name" className={labelClass}>Name</label>
+                  <input type="text" id="name" name="name" className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="address" className={labelClass}>Address</label>
+                  <input type="text" id="address" name="address" className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="cityZip" className={labelClass}>City + Zip</label>
+                  <input type="text" id="cityZip" name="cityZip" placeholder="e.g. Greenville, IL 62246" className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="email" className={labelClass}>E-mail</label>
+                  <input type="email" id="email" name="email" className={inputClass} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="phoneCell" className={labelClass}>Phone – Cell #</label>
+                    <input type="tel" id="phoneCell" name="phoneCell" className={inputClass} />
+                  </div>
+                  <div>
+                    <label htmlFor="phoneHome" className={labelClass}>Home #</label>
+                    <input type="tel" id="phoneHome" name="phoneHome" className={inputClass} />
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Preferred contact method */}
+            <div>
+              <p className={labelClass}>Which method do you prefer? (Check your choice)</p>
+              <div className="flex flex-wrap gap-6">
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="preferCell" value="yes" className="h-4 w-4 text-garden-600 focus:ring-garden-500 border-gray-300 rounded" />
+                  <span>Cell Phone</span>
+                </label>
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="preferHome" value="yes" className="h-4 w-4 text-garden-600 focus:ring-garden-500 border-gray-300 rounded" />
+                  <span>Home Phone</span>
+                </label>
+                <label className="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="preferEmail" value="yes" className="h-4 w-4 text-garden-600 focus:ring-garden-500 border-gray-300 rounded" />
+                  <span>E-Mail</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Mail with dues */}
+            <div className="rounded-lg bg-gray-100 p-4 text-gray-900 text-sm">
+              <p className="font-medium text-gray-900 mb-1">Mail with dues to:</p>
+              <p>Donna Bristow<br />1406 Killarney Dr.<br />Greenville, IL 62246</p>
+            </div>
+
+            {error && (
+              <p className="text-red-600 text-sm">{error}</p>
+            )}
 
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-garden-600 text-white font-semibold rounded-lg hover:bg-garden-700 focus:outline-none focus:ring-2 focus:ring-garden-500 focus:ring-offset-2 transition-colors"
+                disabled={submitting}
+                className="w-full px-6 py-3 bg-garden-600 text-white font-semibold rounded-lg hover:bg-garden-700 focus:outline-none focus:ring-2 focus:ring-garden-500 focus:ring-offset-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Submit Application
+                {submitting ? 'Sending…' : 'Click here to send electronically'}
               </button>
             </div>
-
-            <p className="text-sm text-gray-600 text-center">
-              * Required fields
-            </p>
           </form>
         </div>
       </div>
     </>
   );
 }
-

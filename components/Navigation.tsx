@@ -12,7 +12,7 @@ export default function Navigation() {
     { name: 'History', href: '/history' },
     { name: '2025 Programs', href: '/programs-2025' },
     { name: '2026 Programs', href: '/programs-2026' },
-    { name: 'Join', href: '/join' },
+    { name: 'Membership', href: '/join' },
     { name: 'Plant Questions', href: '/plant-questions' },
     { name: 'Blog', href: '/blog' },
   ];
@@ -24,15 +24,17 @@ export default function Navigation() {
           {/* Logo/Title */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-              <Image 
-                src="/images/logo.png" 
-                alt="Greenville Garden Club Logo" 
-                width={48} 
-                height={48}
-                className="h-12 w-12 object-contain"
-              />
-              <span className="text-xl sm:text-2xl font-bold text-white">
-                Greenville Garden Club
+              <span className="flex items-center gap-3">
+                <Image 
+                  src="/images/logo.png" 
+                  alt="Greenville Garden Club Logo" 
+                  width={48} 
+                  height={48}
+                  className="h-12 w-12 object-contain"
+                />
+                <span className="text-xl sm:text-2xl font-bold text-white">
+                  Greenville Garden Club
+                </span>
               </span>
             </Link>
           </div>
