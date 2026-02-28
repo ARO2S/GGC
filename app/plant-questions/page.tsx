@@ -29,7 +29,7 @@ export default function PlantQuestions() {
     });
     const body = params.toString();
     try {
-      const res = await fetch('/plant-questions', {
+      const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,

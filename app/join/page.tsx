@@ -36,7 +36,7 @@ export default function Join() {
     const body = params.toString();
 
     try {
-      const res = await fetch('/join', {
+      const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
