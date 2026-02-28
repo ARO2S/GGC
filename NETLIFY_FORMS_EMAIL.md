@@ -6,7 +6,7 @@ The membership form is handled by **Netlify Forms**. No SMTP or backend is requi
 
 The app uses a **static form registration page** so Netlify can see the forms at deploy time:
 
-- **`public/netlify-forms.html`** – Contains minimal `<form name="membership">` and `<form name="plant-questions">` with `data-netlify="true"`. Netlify's crawler reads this file and registers the forms. The real forms on the Join and Plant Questions pages submit with the same names, so submissions are accepted.
+- **`public/netlify-forms.html`** – Contains minimal `<form name="membership">` and `<form name="plant-questions">` with `data-netlify="true"`. Netlify's crawler reads this file and registers the forms. The real forms on the Join and Plant Questions pages submit via AJAX to **this same URL** (`/netlify-forms.html`); with Next.js, the POST target must be this static file so Netlify Forms receives the submission (POST to `/` is handled by the app and never reaches Netlify).
 
 **You need to redeploy** after this file is in the repo. Then in Netlify: **Site configuration** → **Forms**. You should see **membership** and **plant-questions** listed. If they still don't appear, trigger a full deploy (e.g. clear cache and deploy again).
 
