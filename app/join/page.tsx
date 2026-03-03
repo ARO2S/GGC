@@ -36,7 +36,7 @@ export default function Join() {
     const body = params.toString();
 
     try {
-      const res = await fetch('/netlify-forms.html', {
+      const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
@@ -82,7 +82,6 @@ export default function Join() {
             name="membership"
             method="POST"
             data-netlify="true"
-            data-netlify-recaptcha="true"
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -200,7 +199,6 @@ export default function Join() {
               <p>Donna Bristow<br />1406 Killarney Dr.<br />Greenville, IL 62246</p>
             </div>
 
-            <div data-netlify-recaptcha></div>
 
             {error && (
               <p className="text-red-600 text-sm">{error}</p>
