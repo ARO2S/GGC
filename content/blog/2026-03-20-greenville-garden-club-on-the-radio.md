@@ -6,3 +6,5 @@ author: Stephen Ross
 We were recently features on a radio show!
 
 Catch the interview here: <https://wgel.com/program-schedule/2017/10/public-affairs/>
+
+Click the grey speaker icon at the bottom of the article to listen to the episode.
