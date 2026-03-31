@@ -1,11 +1,62 @@
 import Link from 'next/link';
 import Hero from '@/components/Hero';
-import PhotoGallery from '@/components/PhotoGallery';
+import PhotoCarousel from '@/components/PhotoCarousel';
+import Sponsors, { Sponsor } from '@/components/Sponsors';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+
+interface GalleryPhoto {
+  src: string;
+  alt: string;
+}
+
+function getGalleryPhotos(): GalleryPhoto[] {
+  const dir = path.join(process.cwd(), 'content/gallery');
+  if (!fs.existsSync(dir)) return [];
+
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => {
+      const { data } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
+      return {
+        src: data.image || '',
+        alt: data.title || 'Garden photo',
+        order: data.order ?? 99,
+      };
+    })
+    .filter((p) => p.src)
+    .sort((a, b) => a.order - b.order);
+}
+
+function getSponsors(): Sponsor[] {
+  const dir = path.join(process.cwd(), 'content/sponsors');
+  if (!fs.existsSync(dir)) return [];
+
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => {
+      const { data } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
+      return {
+        name: data.name || 'Sponsor',
+        logo: data.logo || undefined,
+        website: data.website || undefined,
+        description: data.description || undefined,
+        order: data.order ?? 99,
+      };
+    })
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
 
 export default function Home() {
+  const galleryPhotos = getGalleryPhotos();
+  const sponsors = getSponsors();
+
   return (
     <>
-      <Hero 
+      <Hero
         title="Welcome to the Greenville Garden Club"
         subtitle="An active gardening community with programs and activities for all levels of interest and experience"
         showLogo
@@ -18,12 +69,12 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-3xl font-bold text-garden-800 mb-6">About Our Club</h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              The Greenville Garden Club is an active group with programs and activities for all levels 
-              of interest and experience. We have events every month of the year and there are many 
+              The Greenville Garden Club is an active group with programs and activities for all levels
+              of interest and experience. We have events every month of the year and there are many
               opportunities to become involved. Come join us and make some gardening friends!
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Established in 1939, we are proud members of The Garden Clubs of Illinois (District V) 
+              Established in 1939, we are proud members of The Garden Clubs of Illinois (District V)
               and the National Garden Clubs Central Region.
             </p>
           </div>
@@ -86,8 +137,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Photo Gallery */}
-        <PhotoGallery />
+        {/* Photo Carousel */}
+        <PhotoCarousel photos={galleryPhotos} />
+
+        {/* Sponsors */}
+        <Sponsors sponsors={sponsors} compact />
 
         {/* Latest Blog Posts Preview */}
         <section>
@@ -101,8 +155,8 @@ export default function Home() {
             <p className="text-gray-600">
               Check back soon for gardening tips, club updates, and articles from our members.
             </p>
-            <Link 
-              href="/blog" 
+            <Link
+              href="/blog"
               className="inline-block mt-4 px-6 py-3 bg-garden-600 text-white rounded-lg hover:bg-garden-700 transition-colors"
             >
               Visit Our Blog
@@ -113,4 +167,3 @@ export default function Home() {
     </>
   );
 }
-

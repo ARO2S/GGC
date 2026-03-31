@@ -52,6 +52,32 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown", required: false }
 
+  # Gallery Collection
+  - name: "gallery"
+    label: "Photo Gallery"
+    folder: "content/gallery"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} (order: {{order}})"
+    fields:
+      - { label: "Photo Title / Caption", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Display Order", name: "order", widget: "number", default: 99, value_type: "int", hint: "Lower numbers appear first" }
+
+  # Sponsors Collection
+  - name: "sponsors"
+    label: "Sponsors"
+    folder: "content/sponsors"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{name}} (order: {{order}})"
+    fields:
+      - { label: "Company Name", name: "name", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image", required: false, hint: "Upload a logo image (PNG or JPG, ideally with transparent background)" }
+      - { label: "Website URL", name: "website", widget: "string", required: false, hint: "Include https:// (e.g. https://example.com)" }
+      - { label: "Short Description", name: "description", widget: "string", required: false, hint: "One-line description shown on the sponsors page" }
+      - { label: "Display Order", name: "order", widget: "number", default: 99, value_type: "int", hint: "Lower numbers appear first" }
+
   # Pages Collection
   - name: "pages"
     label: "Pages"
