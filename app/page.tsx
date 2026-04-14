@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Hero from '@/components/Hero';
 import PhotoCarousel from '@/components/PhotoCarousel';
 import Sponsors, { Sponsor } from '@/components/Sponsors';
+import BlogCard from '@/components/BlogCard';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
@@ -9,6 +10,28 @@ import matter from 'gray-matter';
 interface GalleryPhoto {
   src: string;
   alt: string;
+}
+
+function getBlogPosts() {
+  const dir = path.join(process.cwd(), 'content/blog');
+  if (!fs.existsSync(dir)) return [];
+
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => {
+      const { data, content } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
+      return {
+        slug: f.replace('.md', ''),
+        title: data.title || 'Untitled',
+        date: data.date || new Date().toISOString(),
+        excerpt: data.excerpt || content.replace(/^#.*\n/m, '').trim().substring(0, 150) + '...',
+        author: data.author,
+        image: data.image,
+      };
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
 }
 
 function getGalleryPhotos(): GalleryPhoto[] {
@@ -53,6 +76,7 @@ function getSponsors(): Sponsor[] {
 export default function Home() {
   const galleryPhotos = getGalleryPhotos();
   const sponsors = getSponsors();
+  const recentPosts = getBlogPosts();
 
   return (
     <>
@@ -102,7 +126,7 @@ export default function Home() {
             </Link>
 
             {/* Programs Card */}
-            <Link href="/programs-2025" className="group">
+            <Link href="/programs-2026" className="group">
               <div className="bg-white rounded-lg shadow-lg p-6 h-full hover:shadow-xl transition-shadow border-t-4 border-garden-600">
                 <div className="text-garden-600 mb-4">
                   <svg className="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,17 +175,25 @@ export default function Home() {
               View All →
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <p className="text-gray-600">
-              Check back soon for gardening tips, club updates, and articles from our members.
-            </p>
-            <Link
-              href="/blog"
-              className="inline-block mt-4 px-6 py-3 bg-garden-600 text-white rounded-lg hover:bg-garden-700 transition-colors"
-            >
-              Visit Our Blog
-            </Link>
-          </div>
+          {recentPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {recentPosts.map((post) => (
+                <BlogCard key={post.slug} {...post} />
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+              <p className="text-gray-600">
+                Check back soon for gardening tips, club updates, and articles from our members.
+              </p>
+              <Link
+                href="/blog"
+                className="inline-block mt-4 px-6 py-3 bg-garden-600 text-white rounded-lg hover:bg-garden-700 transition-colors"
+              >
+                Visit Our Blog
+              </Link>
+            </div>
+          )}
         </section>
       </div>
     </>

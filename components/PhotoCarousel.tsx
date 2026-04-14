@@ -52,7 +52,7 @@ export default function PhotoCarousel({ photos }: PhotoCarouselProps) {
         <h2 className="text-3xl font-bold text-garden-800 mb-8 text-center">Our Garden Gallery</h2>
 
         <div
-          className="relative overflow-hidden rounded-xl shadow-lg bg-black"
+          className="relative overflow-hidden rounded-xl shadow-lg bg-black mx-auto"
           style={{ aspectRatio: '16/9', maxHeight: '520px' }}
           onMouseEnter={stopAutoPlay}
           onMouseLeave={startAutoPlay}

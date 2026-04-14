@@ -10,7 +10,7 @@ export default function Navigation() {
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'History', href: '/history' },
-    { name: '2025 Programs', href: '/programs-2025' },
+    { name: 'Annual Booklet', href: '/booklet' },
     { name: '2026 Programs', href: '/programs-2026' },
     { name: 'Membership', href: '/join' },
     { name: 'Plant Questions', href: '/plant-questions' },
