@@ -29,7 +29,7 @@ export default function Hero({ title, subtitle, backgroundImage, showLogo }: Her
 
           {/* Logo + headline lockup */}
           <div className="flex items-end gap-5 mb-5">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white overflow-hidden shadow-2xl ring-2 ring-white/25 flex-shrink-0">
+            <div className="w-24 h-24 rounded-full bg-white overflow-hidden shadow-2xl ring-2 ring-white/25 flex-shrink-0">
               <Image
                 src="/images/logo.png"
                 alt="Greenville Garden Club"
