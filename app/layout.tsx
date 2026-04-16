@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Greenville Garden Club",
     description: "An active gardening community with programs and activities for all levels of interest and experience.",
-    images: [{ url: '/images/OG-Hero.png', width: 1200, height: 630 }],
+    images: [{ url: '/images/OG-Hero.png', width: 1200, height: 600 }],
     siteName: "Greenville Garden Club",
     type: "website",
   },
