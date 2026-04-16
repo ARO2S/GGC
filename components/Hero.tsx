@@ -7,9 +7,11 @@ interface HeroProps {
   showLogo?: boolean;
 }
 
-export default function Hero({ title, subtitle, backgroundImage, showLogo }: HeroProps) {
+export default function Hero({ title, subtitle, backgroundImage, showLogo = false }: HeroProps) {
 
   if (showLogo) {
+    // backgroundImage must be a trusted, server-controlled path (e.g. '/images/...').
+    // Never pass user-supplied strings here as they would be interpolated into CSS url().
     const bgStyle = backgroundImage
       ? {
           backgroundImage: `linear-gradient(to bottom, rgba(5,20,10,0.35) 0%, rgba(5,20,10,0.78) 100%), url(${backgroundImage})`,
@@ -68,7 +70,7 @@ export default function Hero({ title, subtitle, backgroundImage, showLogo }: Her
               href="/programs-2026"
               className="font-lato text-sm text-white/70 border-b border-white/40 pb-px hover:text-white hover:border-white transition-colors"
             >
-              View 2026 Programs →
+              View 2026 Programs &rarr;
             </a>
           </div>
         </div>
