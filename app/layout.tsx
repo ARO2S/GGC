@@ -22,6 +22,19 @@ const lato = Lato({
 export const metadata: Metadata = {
   title: "Greenville Garden Club",
   description: "An active gardening community with programs and activities for all levels of interest and experience.",
+  openGraph: {
+    title: "Greenville Garden Club",
+    description: "An active gardening community with programs and activities for all levels of interest and experience.",
+    images: [{ url: '/images/OG-Hero.png', width: 1200, height: 630 }],
+    siteName: "Greenville Garden Club",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Greenville Garden Club",
+    description: "An active gardening community with programs and activities for all levels of interest and experience.",
+    images: ['/images/OG-Hero.png'],
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
