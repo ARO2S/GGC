@@ -28,16 +28,21 @@ function getBlogPosts() {
     .filter((f) => f.endsWith('.md'))
     .map((f) => {
       const { data, content } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
+      const raw = content.replace(/^#.*\n/m, '').trim();
+      const dateVal = data.date instanceof Date
+        ? data.date.toISOString()
+        : data.date
+          ? String(data.date)
+          : '1970-01-01';
+
       return {
-        slug: f.replace('.md', ''),
+        slug: path.basename(f, '.md'),
         title: data.title || 'Untitled',
-        date: data.date || new Date().toISOString(),
+        date: dateVal,
         excerpt:
           data.excerpt ||
-          content
-            .replace(/^#.*\n/m, '')
-            .trim()
-            .substring(0, 150) + '...',
+          (raw.length > 150 ? raw.substring(0, 150) + '...' : raw) ||
+          '',
         author: data.author,
         image: data.image,
       };
@@ -229,6 +234,7 @@ export default function Home() {
                 fill
                 className="object-cover"
                 sizes={i === 0 ? '50vw' : '25vw'}
+                priority={i === 0}
               />
             </div>
           ) : (
