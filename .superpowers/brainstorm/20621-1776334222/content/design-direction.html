@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Direction</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f0f; color: #f0f0f0; padding: 24px; }
+    h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .subtitle { color: #aaa; font-size: 0.95rem; margin-bottom: 28px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+    .card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      background: #1a1a1a;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card.selected { border-color: #4ade80; }
+
+    .card-preview { height: 240px; position: relative; overflow: hidden; }
+    .card-body { padding: 16px 18px 18px; }
+    .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; color: #fff; }
+    .card-body p { font-size: 0.85rem; color: #888; line-height: 1.5; }
+
+    /* ─── Option A: Dark Botanical ─── */
+    .preview-a {
+      background: #0a1a0e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      gap: 8px;
+    }
+    .preview-a .tag { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #4ade80; font-weight: 600; }
+    .preview-a .headline { font-size: 1.6rem; font-family: Georgia, serif; font-style: italic; color: #fff; line-height: 1.2; }
+    .preview-a .sub { font-size: 0.65rem; color: #6b7280; max-width: 180px; }
+    .preview-a .leaves {
+      position: absolute;
+      opacity: 0.18;
+      font-size: 5rem;
+      bottom: -10px;
+      right: -5px;
+      transform: rotate(-20deg);
+      pointer-events: none;
+    }
+    .preview-a .nav-strip {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.55rem;
+      color: #9ca3af;
+      letter-spacing: 0.05em;
+    }
+    .preview-a .logo-mark { width: 24px; height: 24px; background: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+    .preview-a .cta {
+      margin-top: 4px;
+      padding: 6px 18px;
+      background: #16a34a;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .preview-a .divider { width: 30px; height: 2px; background: #4ade80; border-radius: 2px; }
+
+    /* ─── Option B: Warm Editorial ─── */
+    .preview-b {
+      background: #f9f4ed;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .preview-b .left {
+      background: #2d4a1e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      gap: 8px;
+      text-align: center;
+    }
+    .preview-b .left .logo-circle {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid #4ade80;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.55rem; color: #4ade80; font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .preview-b .left h4 { font-size: 0.9rem; font-family: Georgia, serif; color: #d1fae5; line-height: 1.3; }
+    .preview-b .left .year { font-size: 0.5rem; color: #86efac; letter-spacing: 0.15em; text-transform: uppercase; }
+    .preview-b .left .cta {
+      padding: 4px 12px;
+      background: #4ade80;
+      border-radius: 999px;
+      font-size: 0.55rem;
+      color: #0a1a0e;
+      font-weight: 700;
+    }
+    .preview-b .right {
+      position: relative;
+      background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 30%, #388e3c 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+    .preview-b .right .card-stack {
+      background: rgba(255,255,255,0.92);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.55rem;
+      color: #333;
+      width: 100%;
+    }
+    .preview-b .right .card-stack .label { font-size: 0.45rem; text-transform: uppercase; color: #16a34a; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 2px; }
+    .preview-b .right .card-stack .title { font-family: Georgia, serif; font-size: 0.7rem; color: #1a1a1a; }
+
+    /* ─── Option C: Modern Lush ─── */
+    .preview-c {
+      background: linear-gradient(160deg, #052e16 0%, #14532d 50%, #166534 100%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-c::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(74,222,128,0.12) 0%, transparent 60%);
+    }
+    .preview-c .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      font-size: 0.5rem;
+      color: #86efac;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid rgba(74,222,128,0.15);
+      position: relative;
+    }
+    .preview-c .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      gap: 10px;
+      position: relative;
+    }
+    .preview-c .eyebrow { font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: #4ade80; font-weight: 600; }
+    .preview-c .big-title {
+      font-size: 2rem;
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .preview-c .description { font-size: 0.6rem; color: #bbf7d0; max-width: 200px; line-height: 1.6; }
+    .preview-c .actions { display: flex; gap: 8px; align-items: center; }
+    .preview-c .btn-primary {
+      padding: 6px 16px;
+      background: #16a34a;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .preview-c .btn-secondary {
+      font-size: 0.6rem;
+      color: #86efac;
+      border-bottom: 1px solid #86efac;
+    }
+    .preview-c .stat-row {
+      display: flex;
+      gap: 20px;
+      padding: 10px 16px;
+      border-top: 1px solid rgba(74,222,128,0.15);
+      position: relative;
+    }
+    .preview-c .stat { text-align: center; }
+    .preview-c .stat .num { font-size: 0.9rem; font-weight: 700; color: #4ade80; }
+    .preview-c .stat .lbl { font-size: 0.45rem; color: #86efac; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .select-hint {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+    .selected-indicator {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 100;
+    }
+    .selected-indicator.show { display: block; }
+  </style>
+</head>
+<body>
+  <h2>Which design direction feels right?</h2>
+  <p class="subtitle">Three different moods for the new landing page — click to select your preference</p>
+
+  <div class="cards">
+
+    <!-- Option A -->
+    <div class="card" data-choice="a" onclick="pick(this)">
+      <div class="card-preview preview-a">
+        <span class="leaves">🌿</span>
+        <div class="nav-strip">
+          <div class="logo-mark">G</div>
+          <span>HOME · PROGRAMS · MEMBERSHIP · BLOG</span>
+        </div>
+        <div class="tag">Greenville, Illinois · Est. 1939</div>
+        <div class="headline">Where Gardens<br>Come to Life</div>
+        <div class="divider"></div>
+        <div class="sub">An active community for all levels of interest and experience</div>
+        <div class="cta">Join Us →</div>
+      </div>
+      <div class="card-body">
+        <h3>A — Dark Botanical</h3>
+        <p>Deep forest green hero, serif italic headlines, botanical accents. Moody, rich, sophisticated — like a high-end garden magazine.</p>
+      </div>
+    </div>
+
+    <!-- Option B -->
+    <div class="card" data-choice="b" onclick="pick(this)">
+      <div class="card-preview preview-b">
+        <div class="left">
+          <div class="logo-circle">GGC</div>
+          <div class="year">Est. 1939</div>
+          <h4>Greenville<br>Garden Club</h4>
+          <div class="cta">Join Us</div>
+        </div>
+        <div class="right">
+          <div class="card-stack">
+            <div class="label">Upcoming Program</div>
+            <div class="title">Spring Planting Workshop — May 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>B — Warm Editorial</h3>
+        <p>Split hero: club identity on dark left panel, lush photo on right. Earthy cream + forest green palette. Timeless and welcoming.</p>
+      </div>
+    </div>
+
+    <!-- Option C -->
+    <div class="card" data-choice="c" onclick="pick(this)">
+      <div class="card-preview preview-c">
+        <div class="top-nav">
+          <span style="font-weight:700;color:#86efac;">GREENVILLE GARDEN CLUB</span>
+          <span>Programs · Blog · Join</span>
+        </div>
+        <div class="main-content">
+          <div class="eyebrow">Greenville, Illinois · Since 1939</div>
+          <div class="big-title">Grow<br>Together</div>
+          <div class="description">Monthly programs, expert speakers, and a community of passionate gardeners</div>
+          <div class="actions">
+            <div class="btn-primary">Join the Club</div>
+            <div class="btn-secondary">View Programs</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="num">85+</div><div class="lbl">Years Active</div></div>
+          <div class="stat"><div class="num">12</div><div class="lbl">Events/Year</div></div>
+          <div class="stat"><div class="num">100%</div><div class="lbl">Community</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>C — Modern Lush</h3>
+        <p>Full-bleed dark green gradient hero, bold headline with stats bar. Contemporary, energetic, feels like a destination.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="select-hint">Click a card to select it, then reply in the terminal</p>
+
+  <div class="selected-indicator" id="indicator"></div>
+
+  <script>
+    function pick(el) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const choice = el.dataset.choice;
+      const name = el.querySelector('h3').textContent;
+      const ind = document.getElementById('indicator');
+      ind.textContent = '✓ Selected: ' + name;
+      ind.classList.add('show');
+
+      // Record selection
+      try {
+        fetch('/__select', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({type:'click', choice, text: name, timestamp: Date.now()})
+        });
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>

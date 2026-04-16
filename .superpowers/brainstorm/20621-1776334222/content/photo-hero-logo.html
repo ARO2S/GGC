@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo in Photo Hero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #111; color: #f0f0f0; padding: 24px; }
+    h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .subtitle { color: #aaa; font-size: 0.95rem; margin-bottom: 28px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card {
+      border-radius: 14px; overflow: hidden;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s; background: #1a1a1a;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card.selected { border-color: #86efac; }
+    .card-preview { height: 310px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .card-body { padding: 16px 18px 20px; }
+    .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 5px; color: #fff; }
+    .card-body p { font-size: 0.84rem; color: #888; line-height: 1.55; }
+
+    /* Shared photo hero */
+    .photo-hero {
+      flex: 1;
+      background:
+        linear-gradient(to bottom, rgba(5,20,10,0.45) 0%, rgba(5,20,10,0.72) 100%),
+        url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Shared nav */
+    .p-nav {
+      padding: 9px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.48rem;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.09em;
+      font-family: 'Lato', sans-serif;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .logo-sm {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: white; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .logo-sm img { width: 30px; height: 30px; object-fit: contain; }
+
+    /* Shared bottom content */
+    .p-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 18px 16px;
+      gap: 7px;
+    }
+    .p-est { font-size: 0.44rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-family: 'Lato', sans-serif; }
+    .p-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; color: #fff; line-height: 1.05; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+    .p-sub { font-size: 0.5rem; color: rgba(255,255,255,0.72); max-width: 200px; line-height: 1.6; font-family: 'Lato', sans-serif; }
+    .p-actions { display: flex; gap: 10px; align-items: center; margin-top: 2px; }
+    .p-btn { padding: 5px 14px; background: #fff; border-radius: 999px; font-size: 0.5rem; color: #1a3a1a; font-weight: 700; font-family: 'Lato', sans-serif; }
+    .p-link { font-size: 0.5rem; color: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 1px; font-family: 'Lato', sans-serif; }
+
+    /* ── 1: Nav only (current mockup) ── */
+    /* uses defaults above */
+
+    /* ── 2: Large centered logo over photo ── */
+    .logo-center-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .logo-lg {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: white; display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.3), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .logo-lg img { width: 72px; height: 72px; object-fit: contain; }
+
+    /* ── 3: Bottom-left logo badge beside text ── */
+    .p-content-with-logo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 18px 16px;
+      gap: 7px;
+    }
+    .logo-text-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .logo-med {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: white; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.25), 0 4px 16px rgba(0,0,0,0.5);
+    }
+    .logo-med img { width: 50px; height: 50px; object-fit: contain; }
+    .logo-text-col { display: flex; flex-direction: column; gap: 4px; }
+
+    .select-hint { text-align: center; margin-top: 24px; font-size: 0.8rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h2>Where should the logo live in the photo hero?</h2>
+  <p class="subtitle">Option B confirmed — now let's place the logo prominently</p>
+
+  <div class="cards">
+
+    <!-- 1: Logo in nav only -->
+    <div class="card" data-choice="nav-only" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="photo-hero">
+          <div class="p-nav">
+            <div class="logo-sm"><img src="/files/logo.png" alt="logo"></div>
+            <span>Programs · Blog · Join</span>
+          </div>
+          <div class="p-content">
+            <div class="p-est">Established 1939 · Greenville, Illinois</div>
+            <div class="p-title">Grow<br>With Us</div>
+            <div class="p-sub">Monthly programs, workshops, and a community of passionate gardeners</div>
+            <div class="p-actions">
+              <div class="p-btn">Join the Club</div>
+              <div class="p-link">View Programs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>1 — Logo in Nav Only</h3>
+        <p>Logo stays in the navbar. The photo and headline own the hero. Clean and editorial — the photo does the heavy lifting.</p>
+      </div>
+    </div>
+
+    <!-- 2: Large centered logo -->
+    <div class="card" data-choice="center-large" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="photo-hero">
+          <div class="p-nav">
+            <span style="font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.12em;font-size:0.5rem;">GREENVILLE GARDEN CLUB</span>
+            <span style="font-size:0.48rem;">Programs · Blog · Join</span>
+          </div>
+          <div class="logo-center-wrap">
+            <div class="logo-lg"><img src="/files/logo.png" alt="logo"></div>
+          </div>
+          <div class="p-content">
+            <div class="p-est">Established 1939 · Greenville, Illinois</div>
+            <div class="p-title">Grow<br>With Us</div>
+            <div class="p-sub">Monthly programs, workshops, and a community of passionate gardeners</div>
+            <div class="p-actions">
+              <div class="p-btn">Join the Club</div>
+              <div class="p-link">View Programs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>2 — Large Centered Logo</h3>
+        <p>Logo medallion floats centered over the photo, headline anchors the bottom. Logo is unmissable — brand-first, then the photo draws you in.</p>
+      </div>
+    </div>
+
+    <!-- 3: Logo beside headline -->
+    <div class="card" data-choice="beside-headline" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="photo-hero">
+          <div class="p-nav">
+            <span style="font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.12em;font-size:0.5rem;">GREENVILLE GARDEN CLUB</span>
+            <span style="font-size:0.48rem;">Programs · Blog · Join</span>
+          </div>
+          <div class="p-content-with-logo">
+            <div class="logo-text-row">
+              <div class="logo-med"><img src="/files/logo.png" alt="logo"></div>
+              <div class="logo-text-col">
+                <div class="p-est" style="margin:0;">Established 1939 · Greenville, IL</div>
+                <div class="p-title">Grow<br>With Us</div>
+              </div>
+            </div>
+            <div class="p-sub">Monthly programs, workshops, and a community of passionate gardeners</div>
+            <div class="p-actions">
+              <div class="p-btn">Join the Club</div>
+              <div class="p-link">View Programs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>3 — Logo Beside Headline</h3>
+        <p>Logo sits at the same level as the headline text in the lower-left — feels like a unified brand lockup. Logo and headline read as one identity statement.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="select-hint">Click your preference, then reply in the terminal</p>
+
+  <script>
+    function pick(el) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const choice = el.dataset.choice;
+      const name = el.querySelector('h3').textContent;
+      try {
+        fetch('/__select', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({type:'click', choice, text: name, timestamp: Date.now()})
+        });
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>

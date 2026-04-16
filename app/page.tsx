@@ -9,7 +9,7 @@ import matter from 'gray-matter';
 
 // ── Hero background image ──────────────────────────────────────────────────
 // Preview at /images/uploads/WhiteOak (1).JPG — swap if not suitable.
-const HERO_IMAGE = '/images/uploads/WhiteOak (1).JPG';
+const HERO_IMAGE = '/images/hero1cropped.jpg';
 
 // ── Data loaders ───────────────────────────────────────────────────────────
 

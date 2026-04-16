@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Treatment</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      padding: 24px;
+    }
+    h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .subtitle { color: #aaa; font-size: 0.95rem; margin-bottom: 28px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+    .card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      background: #1a1a1a;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card.selected { border-color: #4ade80; }
+    .card-preview { height: 260px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .card-body { padding: 16px 18px 18px; }
+    .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; color: #fff; }
+    .card-body p { font-size: 0.85rem; color: #888; line-height: 1.5; }
+    .card-body .note { font-size: 0.75rem; color: #4ade80; margin-top: 6px; }
+
+    /* Shared hero bg */
+    .hero-bg {
+      background: linear-gradient(160deg, #052e16 0%, #14532d 55%, #166534 100%);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(74,222,128,0.10) 0%, transparent 65%);
+    }
+    .hero-bg .nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.5rem;
+      color: #86efac;
+      border-bottom: 1px solid rgba(74,222,128,0.15);
+      letter-spacing: 0.08em;
+    }
+    .eyebrow { font-size: 0.52rem; letter-spacing: 0.22em; text-transform: uppercase; color: #4ade80; font-weight: 600; position: relative; }
+    .big-title { font-size: 1.5rem; font-family: Georgia, serif; font-style: italic; color: #fff; line-height: 1.1; position: relative; }
+    .desc { font-size: 0.55rem; color: #bbf7d0; max-width: 190px; line-height: 1.6; position: relative; }
+    .cta { padding: 5px 14px; background: #16a34a; border-radius: 999px; font-size: 0.55rem; color: #fff; font-weight: 600; position: relative; }
+
+    /* ─── Treatment 1: White Badge/Medallion ─── */
+    .badge-logo {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.4), 0 8px 24px rgba(0,0,0,0.4);
+      overflow: hidden;
+      position: relative;
+    }
+    .badge-logo img { width: 56px; height: 56px; object-fit: contain; }
+
+    /* ─── Treatment 2: Transparent bg (colored text) ─── */
+    .logo-transparent {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo-leaf { font-size: 2.8rem; line-height: 1; filter: hue-rotate(0deg); }
+    .logo-text-top { font-size: 0.55rem; letter-spacing: 0.12em; color: #86efac; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; }
+    .logo-text-main { font-size: 0.95rem; font-family: Georgia, serif; font-style: italic; color: #fff; line-height: 1.1; }
+
+    /* ─── Treatment 3: Left-aligned with large logo ─── */
+    .split-hero {
+      background: linear-gradient(160deg, #052e16 0%, #14532d 55%, #166534 100%);
+      flex: 1;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      padding: 28px 16px 16px;
+      gap: 14px;
+      position: relative;
+    }
+    .split-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(74,222,128,0.10) 0%, transparent 65%);
+    }
+    .split-hero .logo-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .split-hero .big-badge {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 8px 24px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    .split-hero .big-badge img { width: 64px; height: 64px; object-fit: contain; }
+    .split-hero .divider-v {
+      width: 1px; flex: 1;
+      background: linear-gradient(to bottom, rgba(74,222,128,0.4), transparent);
+    }
+    .split-hero .text-col {
+      display: flex; flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+    }
+    .split-hero .eyebrow { font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase; color: #4ade80; font-weight: 600; }
+    .split-hero .title { font-size: 1.35rem; font-family: Georgia, serif; font-style: italic; color: #fff; line-height: 1.15; }
+    .split-hero .sub { font-size: 0.52rem; color: #bbf7d0; line-height: 1.6; }
+    .split-hero .actions { display: flex; gap: 8px; align-items: center; margin-top: 2px; }
+    .split-hero .btn { padding: 4px 12px; background: #16a34a; border-radius: 999px; font-size: 0.52rem; color: #fff; font-weight: 600; }
+    .split-hero .btn-ghost { font-size: 0.52rem; color: #86efac; border-bottom: 1px solid #86efac; }
+    .split-hero .nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 8px 14px;
+      display: flex;
+      justify-flex-end;
+      justify-content: flex-end;
+      font-size: 0.48rem;
+      color: #86efac;
+      border-bottom: 1px solid rgba(74,222,128,0.15);
+      letter-spacing: 0.08em;
+      gap: 12px;
+    }
+
+    .select-hint { text-align: center; margin-top: 24px; font-size: 0.8rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h2>How should the logo live in the hero?</h2>
+  <p class="subtitle">The logo has a white background — here's how each treatment handles that on the dark design</p>
+
+  <div class="cards">
+
+    <!-- Option 1: Centered badge -->
+    <div class="card" data-choice="badge" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="hero-bg">
+          <div class="nav"><span>GGC</span><span>Programs · Blog · Join</span></div>
+          <div class="badge-logo">
+            <img src="/images/logo.png" alt="logo" />
+          </div>
+          <div class="eyebrow">Greenville, Illinois · Est. 1939</div>
+          <div class="big-title">Grow<br>Together</div>
+          <div class="desc">An active community for all levels of interest and experience</div>
+          <div class="cta">Join the Club →</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>1 — Logo as Medallion</h3>
+        <p>Centered circular badge with a green glow ring. White background becomes a feature — it reads as a heritage seal/stamp. No logo changes needed.</p>
+        <p class="note">✓ No logo edits required</p>
+      </div>
+    </div>
+
+    <!-- Option 2: Transparent/recolored -->
+    <div class="card" data-choice="recolor" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="hero-bg">
+          <div class="nav"><span>GGC</span><span>Programs · Blog · Join</span></div>
+          <div class="logo-transparent">
+            <div class="logo-text-top">The Greenville</div>
+            <div class="logo-leaf">🌿</div>
+            <div class="logo-text-main">Garden Club</div>
+          </div>
+          <div class="eyebrow">Established 1939</div>
+          <div class="big-title">Grow<br>Together</div>
+          <div class="desc">An active community for all levels of interest and experience</div>
+          <div class="cta">Join the Club →</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>2 — White Text Logo</h3>
+        <p>Change "Garden Club" script from dark to white/cream — logo sits naturally on dark bg with no container. Feels clean and modern.</p>
+        <p class="note">⚠ Requires editing the logo file</p>
+      </div>
+    </div>
+
+    <!-- Option 3: Split with big logo left -->
+    <div class="card" data-choice="split" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="split-hero">
+          <div class="nav">
+            <span>Programs</span><span>Blog</span><span>Join</span>
+          </div>
+          <div class="logo-col">
+            <div class="big-badge">
+              <img src="/images/logo.png" alt="logo" />
+            </div>
+            <div class="divider-v"></div>
+          </div>
+          <div class="text-col">
+            <div class="eyebrow">Greenville, IL · Est. 1939</div>
+            <div class="title">Welcome to the Garden Club</div>
+            <div class="sub">Monthly programs, expert speakers, and a community of passionate gardeners</div>
+            <div class="actions">
+              <div class="btn">Join Us</div>
+              <div class="btn-ghost">Learn More</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>3 — Logo Left, Text Right</h3>
+        <p>Large logo anchors the left with a vertical divider, text content flows right. Logo has a white badge feel but given prime real estate. No logo changes needed.</p>
+        <p class="note">✓ No logo edits required</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="select-hint">Click your preference, then reply in the terminal</p>
+
+  <script>
+    function pick(el) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const choice = el.dataset.choice;
+      const name = el.querySelector('h3').textContent;
+      try {
+        fetch('/__select', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({type:'click', choice, text: name, timestamp: Date.now()})
+        });
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>

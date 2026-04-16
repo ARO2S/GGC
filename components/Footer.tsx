@@ -66,7 +66,7 @@ export default function Footer() {
               Follow us on social media for the latest events and gardening tips.
             </p>
             <a
-              href="https://facebook.com" // TODO: replace with club Facebook page URL
+              href="https://www.facebook.com/share/g/1bM3svuqrP/" // TODO: replace with club Facebook page URL
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-garden-300/70 hover:text-white transition-colors"

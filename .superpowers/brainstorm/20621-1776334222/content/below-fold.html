@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Below the Fold</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #111; color: #f0f0f0; padding: 24px; }
+    h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .subtitle { color: #aaa; font-size: 0.95rem; margin-bottom: 28px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card {
+      border-radius: 14px; overflow: hidden;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s; background: #1a1a1a;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card.selected { border-color: #86efac; }
+    .card-preview { height: 400px; overflow-y: auto; display: flex; flex-direction: column; }
+    .card-body { padding: 16px 18px 20px; border-top: 1px solid #222; }
+    .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 5px; color: #fff; }
+    .card-body p { font-size: 0.84rem; color: #888; line-height: 1.55; }
+
+    /* ── Shared mini hero (same for all) ── */
+    .mini-hero {
+      height: 110px;
+      background:
+        linear-gradient(to bottom, rgba(5,20,10,0.45) 0%, rgba(5,20,10,0.72) 100%),
+        url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=70') center/cover no-repeat;
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .mh-nav {
+      padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.42rem; color: rgba(255,255,255,0.7); font-family: 'Lato', sans-serif;
+    }
+    .mh-logo { width: 26px; height: 26px; border-radius: 50%; background: white; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .mh-logo img { width: 22px; height: 22px; object-fit: contain; }
+    .mh-content { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 12px 8px; gap: 2px; }
+    .mh-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; font-style: italic; line-height: 1.1; }
+
+    /* ══════════════════════════════
+       LAYOUT A — Streamlined
+    ══════════════════════════════ */
+    .layout-a { background: #fafaf7; }
+
+    .la-stats {
+      background: #2e4d2e;
+      display: flex; justify-content: center; gap: 0;
+    }
+    .la-stat {
+      flex: 1; text-align: center; padding: 8px 4px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .la-stat:last-child { border-right: none; }
+    .la-stat .n { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: #c8e6c9; }
+    .la-stat .l { font-size: 0.38rem; color: #a5c8a5; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Lato', sans-serif; }
+
+    .la-links {
+      padding: 12px 12px 8px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+    }
+    .la-link {
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+      border: 1px solid #e8e8e0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .la-link .icon { font-size: 1rem; margin-bottom: 3px; }
+    .la-link .lname { font-size: 0.42rem; font-weight: 700; color: #1a3320; font-family: 'Lato', sans-serif; }
+    .la-link .ldesc { font-size: 0.36rem; color: #666; margin-top: 1px; font-family: 'Lato', sans-serif; line-height: 1.4; }
+
+    .la-photo-strip {
+      margin: 0 12px 8px;
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4px; height: 56px; border-radius: 6px; overflow: hidden;
+    }
+    .la-photo-strip .ph { background: #c8dfc4; height: 100%; }
+    .la-photo-strip .ph:nth-child(2) { background: #8fbe8a; }
+    .la-photo-strip .ph:nth-child(3) { background: #4a7c3f; }
+
+    .la-blog {
+      padding: 0 12px 10px;
+    }
+    .la-blog-label { font-size: 0.4rem; text-transform: uppercase; letter-spacing: 0.15em; color: #5c8a5c; font-weight: 700; font-family: 'Lato', sans-serif; margin-bottom: 5px; }
+    .la-blog-item {
+      display: flex; gap: 6px; align-items: flex-start; padding: 5px 0; border-top: 1px solid #eee;
+    }
+    .la-blog-thumb { width: 30px; height: 30px; border-radius: 4px; background: #c8dfc4; flex-shrink: 0; }
+    .la-blog-text .bt { font-size: 0.42rem; font-weight: 700; color: #1a1a1a; font-family: 'Lato', sans-serif; line-height: 1.3; }
+    .la-blog-text .bd { font-size: 0.36rem; color: #888; font-family: 'Lato', sans-serif; margin-top: 1px; }
+
+    /* ══════════════════════════════
+       LAYOUT B — Editorial
+    ══════════════════════════════ */
+    .layout-b { background: #f5f0e8; }
+
+    .lb-about {
+      padding: 12px 14px 8px;
+      border-bottom: 1px solid #e0d8cc;
+    }
+    .lb-about-label { font-size: 0.38rem; text-transform: uppercase; letter-spacing: 0.18em; color: #8b6b3d; font-weight: 700; font-family: 'Lato', sans-serif; margin-bottom: 4px; }
+    .lb-about-text { font-size: 0.44rem; color: #4a3520; line-height: 1.65; font-family: 'Lato', sans-serif; }
+
+    .lb-features {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    }
+    .lb-feat {
+      padding: 10px 12px;
+      border-right: 1px solid #e0d8cc;
+      border-bottom: 1px solid #e0d8cc;
+    }
+    .lb-feat:nth-child(even) { border-right: none; }
+    .lb-feat .fi { font-size: 0.9rem; margin-bottom: 3px; }
+    .lb-feat .fn { font-size: 0.44rem; font-weight: 700; color: #2d1f0e; font-family: 'Playfair Display', serif; margin-bottom: 2px; }
+    .lb-feat .fd { font-size: 0.38rem; color: #6b5240; font-family: 'Lato', sans-serif; line-height: 1.4; }
+
+    .lb-photo {
+      height: 70px;
+      background: linear-gradient(135deg, #c8dfc4, #4a7c3f);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.4rem; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; text-transform: uppercase;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .lb-posts { padding: 8px 12px 10px; }
+    .lb-posts-label { font-size: 0.38rem; text-transform: uppercase; letter-spacing: 0.18em; color: #8b6b3d; font-weight: 700; font-family: 'Lato', sans-serif; margin-bottom: 5px; }
+    .lb-post { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 0; border-top: 1px solid #e0d8cc; }
+    .lb-post .pt { font-family: 'Playfair Display', serif; font-size: 0.46rem; color: #2d1f0e; }
+    .lb-post .pd { font-size: 0.36rem; color: #8b6b3d; font-family: 'Lato', sans-serif; }
+
+    /* ══════════════════════════════
+       LAYOUT C — Minimal & Modern
+    ══════════════════════════════ */
+    .layout-c { background: #fff; }
+
+    .lc-tagline {
+      text-align: center; padding: 14px 12px 10px;
+      border-bottom: 1px solid #f0f0ec;
+    }
+    .lc-tagline .qt { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.75rem; color: #1a3320; line-height: 1.5; }
+    .lc-tagline .qs { font-size: 0.38rem; color: #999; margin-top: 3px; font-family: 'Lato', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .lc-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+    }
+    .lc-cell {
+      padding: 10px 10px;
+      border-right: 1px solid #f0f0ec;
+      border-bottom: 1px solid #f0f0ec;
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 3px;
+    }
+    .lc-cell:last-child { border-right: none; }
+    .lc-cell .ci { font-size: 1.1rem; }
+    .lc-cell .cn { font-size: 0.42rem; font-weight: 700; color: #1a3320; font-family: 'Lato', sans-serif; }
+    .lc-cell .cd { font-size: 0.36rem; color: #888; font-family: 'Lato', sans-serif; line-height: 1.4; }
+
+    .lc-photo-full {
+      height: 72px;
+      background: linear-gradient(135deg, #c8dfc4, #4a7c3f);
+      border-bottom: 1px solid #f0f0ec;
+    }
+
+    .lc-posts { padding: 8px 12px 10px; }
+    .lc-posts-hed { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .lc-posts-hed .ph { font-family: 'Playfair Display', serif; font-size: 0.6rem; color: #1a1a1a; }
+    .lc-posts-hed .pa { font-size: 0.36rem; color: #4a7c3f; font-family: 'Lato', sans-serif; }
+    .lc-post {
+      display: grid; grid-template-columns: 28px 1fr; gap: 6px; align-items: start; padding: 5px 0; border-top: 1px solid #f0f0ec;
+    }
+    .lc-post-img { width: 28px; height: 28px; border-radius: 4px; background: #c8dfc4; }
+    .lc-post-text .pt { font-size: 0.42rem; font-weight: 700; color: #1a1a1a; font-family: 'Lato', sans-serif; line-height: 1.3; }
+    .lc-post-text .pd { font-size: 0.35rem; color: #888; font-family: 'Lato', sans-serif; margin-top: 1px; }
+
+    .select-hint { text-align: center; margin-top: 24px; font-size: 0.8rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h2>What goes below the hero?</h2>
+  <p class="subtitle">Three approaches for the rest of the page — scroll inside each card to see the full layout</p>
+
+  <div class="cards">
+
+    <!-- Layout A: Streamlined -->
+    <div class="card" data-choice="streamlined" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="mini-hero">
+          <div class="mh-nav"><div class="mh-logo"><img src="/files/logo.png" alt="logo"></div><span>Programs · Blog · Join</span></div>
+          <div class="mh-content"><div class="mh-title">Grow With Us</div></div>
+        </div>
+        <div class="layout-a">
+          <div class="la-stats">
+            <div class="la-stat"><div class="n">85+</div><div class="l">Years Active</div></div>
+            <div class="la-stat"><div class="n">12</div><div class="l">Events/Yr</div></div>
+            <div class="la-stat"><div class="n">1939</div><div class="l">Est.</div></div>
+          </div>
+          <div class="la-links">
+            <div class="la-link"><div class="icon">🌱</div><div class="lname">Join Us</div><div class="ldesc">Become a member</div></div>
+            <div class="la-link"><div class="icon">📅</div><div class="lname">Programs</div><div class="ldesc">2026 events</div></div>
+            <div class="la-link"><div class="icon">💬</div><div class="lname">Ask a Question</div><div class="ldesc">Plant advice</div></div>
+          </div>
+          <div class="la-photo-strip">
+            <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+          </div>
+          <div class="la-blog">
+            <div class="la-blog-label">Latest Articles</div>
+            <div class="la-blog-item"><div class="la-blog-thumb"></div><div class="la-blog-text"><div class="bt">Spring Planting Tips for Illinois</div><div class="bd">April 2026</div></div></div>
+            <div class="la-blog-item"><div class="la-blog-thumb"></div><div class="la-blog-text"><div class="bt">White Oak Dedication Ceremony Recap</div><div class="bd">March 2026</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A — Streamlined</h3>
+        <p>Stats bar → 3 action cards → photo strip → blog posts. Fast, scannable, action-oriented. Drops the lengthy about text.</p>
+      </div>
+    </div>
+
+    <!-- Layout B: Editorial -->
+    <div class="card" data-choice="editorial" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="mini-hero">
+          <div class="mh-nav"><div class="mh-logo"><img src="/files/logo.png" alt="logo"></div><span>Programs · Blog · Join</span></div>
+          <div class="mh-content"><div class="mh-title">Grow With Us</div></div>
+        </div>
+        <div class="layout-b">
+          <div class="lb-about">
+            <div class="lb-about-label">About the Club</div>
+            <div class="lb-about-text">Established in 1939, the Greenville Garden Club is an active group with programs for all levels of interest and experience. We have events every month and many ways to get involved.</div>
+          </div>
+          <div class="lb-features">
+            <div class="lb-feat"><div class="fi">🌿</div><div class="fn">Membership</div><div class="fd">Join our growing community</div></div>
+            <div class="lb-feat"><div class="fi">📅</div><div class="fn">Programs</div><div class="fd">Monthly workshops & events</div></div>
+            <div class="lb-feat"><div class="fi">📸</div><div class="fn">Gallery</div><div class="fd">Our garden moments</div></div>
+            <div class="lb-feat"><div class="fi">💬</div><div class="fn">Plant Help</div><div class="fd">Ask our experts</div></div>
+          </div>
+          <div class="lb-photo">Photo Gallery</div>
+          <div class="lb-posts">
+            <div class="lb-posts-label">Recent Articles</div>
+            <div class="lb-post"><div class="pt">Spring Planting Tips for Illinois</div><div class="pd">Apr 2026</div></div>
+            <div class="lb-post"><div class="pt">White Oak Dedication Ceremony</div><div class="pd">Mar 2026</div></div>
+            <div class="lb-post"><div class="pt">Best Perennials for Zone 6</div><div class="pd">Feb 2026</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>B — Editorial</h3>
+        <p>About blurb → 2×2 feature grid → photo gallery → article list. Warm cream tones, more content-rich, magazine feel throughout.</p>
+      </div>
+    </div>
+
+    <!-- Layout C: Minimal Modern -->
+    <div class="card" data-choice="minimal" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="mini-hero">
+          <div class="mh-nav"><div class="mh-logo"><img src="/files/logo.png" alt="logo"></div><span>Programs · Blog · Join</span></div>
+          <div class="mh-content"><div class="mh-title">Grow With Us</div></div>
+        </div>
+        <div class="layout-c">
+          <div class="lc-tagline">
+            <div class="qt">"An active community for all levels of interest and experience"</div>
+            <div class="qs">Greenville, Illinois · Est. 1939</div>
+          </div>
+          <div class="lc-grid">
+            <div class="lc-cell"><div class="ci">🌱</div><div class="cn">Become a Member</div><div class="cd">Join our community of gardeners</div></div>
+            <div class="lc-cell"><div class="ci">📅</div><div class="cn">2026 Programs</div><div class="cd">See this year's events</div></div>
+            <div class="lc-cell"><div class="ci">💬</div><div class="cn">Plant Questions</div><div class="cd">Get expert advice</div></div>
+          </div>
+          <div class="lc-photo-full"></div>
+          <div class="lc-posts">
+            <div class="lc-posts-hed"><div class="ph">Latest Articles</div><div class="pa">View all →</div></div>
+            <div class="lc-post"><div class="lc-post-img"></div><div class="lc-post-text"><div class="pt">Spring Planting Tips for Illinois</div><div class="pd">April 2026</div></div></div>
+            <div class="lc-post"><div class="lc-post-img"></div><div class="lc-post-text"><div class="pt">White Oak Dedication Ceremony</div><div class="pd">March 2026</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>C — Minimal & Modern</h3>
+        <p>Italic quote → 3 action cells → full-width photo → blog cards. Clean white background, lots of breathing room, contemporary feel.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="select-hint">Click your preference, then reply in the terminal</p>
+
+  <script>
+    function pick(el) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const choice = el.dataset.choice;
+      const name = el.querySelector('h3').textContent;
+      try {
+        fetch('/__select', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({type:'click', choice, text: name, timestamp: Date.now()})
+        });
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>

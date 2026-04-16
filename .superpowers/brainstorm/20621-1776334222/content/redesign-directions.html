@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Directions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #111;
+      color: #f0f0f0;
+      padding: 24px;
+    }
+    h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    .subtitle { color: #aaa; font-size: 0.95rem; margin-bottom: 28px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+    .card {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      background: #1a1a1a;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card.selected { border-color: #86efac; }
+    .card-preview { height: 320px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .card-body { padding: 16px 18px 20px; }
+    .card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 5px; color: #fff; }
+    .card-body p { font-size: 0.84rem; color: #888; line-height: 1.55; }
+
+    /* ═══════════════════════════════════════
+       A — CREAM BOTANICAL
+    ═══════════════════════════════════════ */
+    .preview-a {
+      background: #f5f0e8;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-a .nav-a {
+      background: #f5f0e8;
+      border-bottom: 1px solid #ddd5c4;
+      padding: 9px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.48rem;
+      color: #5c4a2a;
+      letter-spacing: 0.1em;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-a .logo-a {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    .preview-a .logo-a img { width: 36px; height: 36px; object-fit: contain; }
+    .preview-a .hero-a {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .preview-a .left-a {
+      padding: 18px 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+    .preview-a .tag-a {
+      font-size: 0.44rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8b6b3d;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+    }
+    .preview-a .headline-a {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: #2d1f0e;
+      line-height: 1.15;
+      font-style: italic;
+    }
+    .preview-a .body-a {
+      font-size: 0.5rem;
+      color: #6b5240;
+      line-height: 1.6;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-a .cta-a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 12px;
+      background: #4a7c3f;
+      border-radius: 999px;
+      font-size: 0.5rem;
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      width: fit-content;
+    }
+    .preview-a .right-a {
+      position: relative;
+      background: linear-gradient(145deg, #c8dfc4 0%, #8fbe8a 40%, #4a7c3f 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 12px;
+    }
+    .preview-a .right-a::before {
+      content: '🌿🌸🌱';
+      position: absolute;
+      top: 10px; right: 8px;
+      font-size: 1.8rem;
+      opacity: 0.5;
+      transform: rotate(15deg);
+    }
+    .preview-a .right-a .card-float {
+      background: rgba(255,255,255,0.92);
+      border-radius: 8px;
+      padding: 8px 10px;
+      width: 100%;
+      backdrop-filter: blur(4px);
+    }
+    .preview-a .right-a .card-float .cf-label {
+      font-size: 0.42rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #4a7c3f;
+      font-weight: 700;
+      font-family: 'Lato', sans-serif;
+      margin-bottom: 2px;
+    }
+    .preview-a .right-a .card-float .cf-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.65rem;
+      color: #1a1a1a;
+    }
+
+    /* ═══════════════════════════════════════
+       B — PHOTO MAGAZINE
+    ═══════════════════════════════════════ */
+    .preview-b {
+      flex: 1;
+      background:
+        linear-gradient(to bottom, rgba(10,30,15,0.55) 0%, rgba(5,20,10,0.75) 100%),
+        url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-b .nav-b {
+      padding: 9px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.48rem;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .preview-b .logo-b {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .preview-b .logo-b img { width: 32px; height: 32px; object-fit: contain; }
+    .preview-b .hero-content-b {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 18px 18px;
+      gap: 8px;
+    }
+    .preview-b .est-b {
+      font-size: 0.46rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-b .headline-b {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.9rem;
+      color: #fff;
+      line-height: 1.05;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .preview-b .sub-b {
+      font-size: 0.52rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 200px;
+      line-height: 1.6;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-b .actions-b {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .preview-b .btn-b {
+      padding: 5px 14px;
+      background: #fff;
+      border-radius: 999px;
+      font-size: 0.5rem;
+      color: #1a3a1a;
+      font-weight: 700;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-b .link-b {
+      font-size: 0.5rem;
+      color: rgba(255,255,255,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding-bottom: 1px;
+    }
+
+    /* ═══════════════════════════════════════
+       C — SOFT SAGE / AIRY
+    ═══════════════════════════════════════ */
+    .preview-c {
+      background: #eef4ee;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-c .nav-c {
+      background: #2e4d2e;
+      padding: 9px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.48rem;
+      color: #c8e6c9;
+      letter-spacing: 0.08em;
+    }
+    .preview-c .logo-c {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .preview-c .logo-c img { width: 32px; height: 32px; object-fit: contain; }
+    .preview-c .hero-c {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 10px;
+      text-align: center;
+      position: relative;
+    }
+    .preview-c .badge-c {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(46,77,46,0.2);
+      border: 2px solid #a8d5a2;
+    }
+    .preview-c .badge-c img { width: 56px; height: 56px; object-fit: contain; }
+    .preview-c .tag-c {
+      font-size: 0.44rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #5c8a5c;
+      font-weight: 700;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-c .headline-c {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: #1a3320;
+      line-height: 1.15;
+    }
+    .preview-c .sub-c {
+      font-size: 0.5rem;
+      color: #4a6b4a;
+      max-width: 200px;
+      line-height: 1.6;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-c .actions-c {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .preview-c .btn-c {
+      padding: 5px 14px;
+      background: #2e4d2e;
+      border-radius: 999px;
+      font-size: 0.5rem;
+      color: #fff;
+      font-weight: 700;
+      font-family: 'Lato', sans-serif;
+    }
+    .preview-c .link-c {
+      font-size: 0.5rem;
+      color: #4a7c3f;
+      border-bottom: 1px solid #4a7c3f;
+      padding-bottom: 1px;
+    }
+    .preview-c .banner-c {
+      background: #2e4d2e;
+      padding: 7px 16px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .preview-c .stat-c { text-align: center; }
+    .preview-c .stat-c .n { font-size: 0.7rem; font-weight: 700; color: #c8e6c9; font-family: 'Playfair Display', serif; }
+    .preview-c .stat-c .l { font-size: 0.4rem; color: #a5c8a5; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .select-hint { text-align: center; margin-top: 24px; font-size: 0.8rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h2>Fresh directions — very different vibes</h2>
+  <p class="subtitle">Moving away from dark green — click your preference</p>
+
+  <div class="cards">
+
+    <!-- A: Cream Botanical -->
+    <div class="card" data-choice="cream" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="preview-a">
+          <div class="nav-a">
+            <div class="logo-a"><img src="/files/logo.png" alt="logo"></div>
+            <span style="letter-spacing:0.08em;">Programs · Blog · Join</span>
+          </div>
+          <div class="hero-a">
+            <div class="left-a">
+              <div class="tag-a">Greenville, Illinois · Est. 1939</div>
+              <div class="headline-a">Where Gardens<br>Come to Life</div>
+              <div class="body-a">An active community for all levels of interest and experience since 1939.</div>
+              <div class="cta-a">Join the Club</div>
+            </div>
+            <div class="right-a">
+              <div class="card-float">
+                <div class="cf-label">Next Program</div>
+                <div class="cf-title">Spring Planting Workshop</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A — Cream & Botanical</h3>
+        <p>Warm ivory background, split hero with text left and lush greenery right, earthy serif typography. Elegant and timeless — like a high-end lifestyle magazine.</p>
+      </div>
+    </div>
+
+    <!-- B: Photo Magazine -->
+    <div class="card" data-choice="photo" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="preview-b">
+          <div class="nav-b">
+            <div class="logo-b"><img src="/files/logo.png" alt="logo"></div>
+            <span>Programs · Blog · Join</span>
+          </div>
+          <div class="hero-content-b">
+            <div class="est-b">Established 1939 · Greenville, Illinois</div>
+            <div class="headline-b">Grow<br>With Us</div>
+            <div class="sub-b">Monthly programs, workshops, and a community of passionate gardeners</div>
+            <div class="actions-b">
+              <div class="btn-b">Join the Club</div>
+              <div class="link-b">View Programs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>B — Full Bleed Photography</h3>
+        <p>Real garden photography fills the entire hero with a subtle dark overlay, large serif headline sits over the image. Dramatic, immersive, visually rich.</p>
+      </div>
+    </div>
+
+    <!-- C: Soft Sage -->
+    <div class="card" data-choice="sage" onclick="pick(this)">
+      <div class="card-preview">
+        <div class="preview-c">
+          <div class="nav-c">
+            <div class="logo-c"><img src="/files/logo.png" alt="logo"></div>
+            <span>Programs · Blog · Join</span>
+          </div>
+          <div class="hero-c">
+            <div class="badge-c"><img src="/files/logo.png" alt="logo"></div>
+            <div class="tag-c">Greenville, Illinois · Est. 1939</div>
+            <div class="headline-c">Greenville<br>Garden Club</div>
+            <div class="sub-c">An active community for all levels of interest and experience</div>
+            <div class="actions-c">
+              <div class="btn-c">Join the Club</div>
+              <div class="link-c">Learn More</div>
+            </div>
+          </div>
+          <div class="banner-c">
+            <div class="stat-c"><div class="n">85+</div><div class="l">Years</div></div>
+            <div class="stat-c"><div class="n">12</div><div class="l">Events/yr</div></div>
+            <div class="stat-c"><div class="n">Est. 1939</div><div class="l">Heritage</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>C — Soft Sage & Light</h3>
+        <p>Light sage/mint background, clean and airy, logo centered with a dark green nav bar. Fresh and welcoming — modern but not cold.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="select-hint">Click your preference, then reply in the terminal</p>
+
+  <script>
+    function pick(el) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      const choice = el.dataset.choice;
+      const name = el.querySelector('h3').textContent;
+      try {
+        fetch('/__select', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({type:'click', choice, text: name, timestamp: Date.now()})
+        });
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>
