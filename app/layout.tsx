@@ -1,10 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  style: ["normal", "italic"],
+  weight: ["400", "700"],
+});
+
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--font-lato",
+  weight: ["300", "400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Greenville Garden Club",
@@ -25,7 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col min-h-screen bg-gradient-to-b from-garden-50 to-white`}>
+      <body
+        className={`${inter.className} ${playfair.variable} ${lato.variable} flex flex-col min-h-screen bg-surface`}
+      >
         <Navigation />
         <main className="flex-grow">
           {children}

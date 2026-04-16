@@ -19,6 +19,8 @@ const config: Config = {
           600: '#16a34a',
           700: '#15803d',
           800: '#166534',
+          850: '#1a3320',
+          860: '#142a1a',
           900: '#14532d',
           950: '#052e16',
         },
@@ -35,6 +37,14 @@ const config: Config = {
           900: '#5c4630',
           950: '#312418',
         },
+        surface: {
+          DEFAULT: '#fafaf7',
+          warm: '#f0f0e8',
+        },
+      },
+      fontFamily: {
+        playfair: ['var(--font-playfair)', 'Georgia', 'serif'],
+        lato: ['var(--font-lato)', 'system-ui', 'sans-serif'],
       },
     },
   },
