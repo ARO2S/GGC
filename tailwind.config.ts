@@ -43,6 +43,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        inter: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         playfair: ['var(--font-playfair)', 'Georgia', 'serif'],
         lato: ['var(--font-lato)', 'system-ui', 'sans-serif'],
       },

@@ -4,7 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${playfair.variable} ${lato.variable} flex flex-col min-h-screen bg-surface`}
+        className={`${inter.variable} ${playfair.variable} ${lato.variable} flex flex-col min-h-screen bg-surface`}
       >
         <Navigation />
         <main className="flex-grow">
