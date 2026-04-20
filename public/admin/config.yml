@@ -35,8 +35,11 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Time", name: "time", widget: "string" }
       - { label: "Location", name: "location", widget: "string" }
+      - { label: "Address", name: "address", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown", required: false }
+      - { label: "Linked Blog Post Slug", name: "blogSlug", widget: "string", required: false, hint: "Slug of a blog post to show as an Event Recap on this program's page (e.g. 2025-06-10-potluck-recap)" }
+      - { label: "PDF", name: "pdf", widget: "string", required: false, hint: "Path to a PDF file (e.g. /programs/my-event.pdf)" }
 
   # 2026 Programs Collection
   - name: "programs-2026"
@@ -49,8 +52,11 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Time", name: "time", widget: "string" }
       - { label: "Location", name: "location", widget: "string" }
+      - { label: "Address", name: "address", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown", required: false }
+      - { label: "Linked Blog Post Slug", name: "blogSlug", widget: "string", required: false, hint: "Slug of a blog post to show as an Event Recap on this program's page (e.g. 2026-04-20-potluck-recap)" }
+      - { label: "PDF", name: "pdf", widget: "string", required: false, hint: "Path to a PDF file (e.g. /programs/my-event.pdf)" }
 
   # Gallery Collection
   - name: "gallery"

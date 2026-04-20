@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import Hero from '@/components/Hero';
 import Sponsors, { Sponsor } from '@/components/Sponsors';
 import BlogCard from '@/components/BlogCard';
+import HomePhotoStrip from '@/components/HomePhotoStrip';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
@@ -12,12 +12,6 @@ import matter from 'gray-matter';
 const HERO_IMAGE = '/images/hero1cropped.jpg';
 
 // ── Data loaders ───────────────────────────────────────────────────────────
-
-interface GalleryPhoto {
-  src: string;
-  alt: string;
-  order: number;
-}
 
 function getBlogPosts() {
   const dir = path.join(process.cwd(), 'content/blog');
@@ -51,25 +45,17 @@ function getBlogPosts() {
     .slice(0, 2);
 }
 
-function getGalleryPhotos(): GalleryPhoto[] {
-  const dir = path.join(process.cwd(), 'content/gallery');
-  if (!fs.existsSync(dir)) return [];
+const SUPPORTED_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
 
+function getUploadPhotos() {
+  const dir = path.join(process.cwd(), 'public/images/uploads');
+  if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
-    .filter((f) => f.endsWith('.md'))
-    .map((f) => {
-      const { data } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
-      return {
-        src: data.image || '',
-        alt: data.title || 'Garden photo',
-        order: data.order ?? 99,
-      };
-    })
-    .filter((p) => p.src)
-    .sort((a, b) => a.order - b.order)
-    .slice(0, 3);
+    .filter((f) => SUPPORTED_EXTS.has(path.extname(f).toLowerCase()))
+    .map((f) => ({ src: `/images/uploads/${f}`, alt: 'Garden photo' }));
 }
+
 
 function getSponsors(): Sponsor[] {
   const dir = path.join(process.cwd(), 'content/sponsors');
@@ -94,15 +80,9 @@ function getSponsors(): Sponsor[] {
 // ── Page ───────────────────────────────────────────────────────────────────
 
 export default function Home() {
-  const galleryPhotos = getGalleryPhotos();
+  const uploadPhotos = getUploadPhotos();
   const sponsors = getSponsors();
   const recentPosts = getBlogPosts();
-
-  // Always render 3 slots; fill missing with null for gradient placeholders
-  const stripPhotos: (GalleryPhoto | null)[] = [
-    ...galleryPhotos,
-    ...Array(Math.max(0, 3 - galleryPhotos.length)).fill(null),
-  ];
 
   return (
     <>
@@ -221,30 +201,7 @@ export default function Home() {
       </section>
 
       {/* ── Photo strip ── */}
-      <div
-        className="grid h-48 sm:h-56 gap-[3px]"
-        style={{ gridTemplateColumns: '2fr 1fr 1fr' }}
-      >
-        {stripPhotos.map((photo, i) =>
-          photo ? (
-            <div key={photo.src} className="relative overflow-hidden bg-garden-200">
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                className="object-cover"
-                sizes={i === 0 ? '50vw' : '25vw'}
-                priority={i === 0}
-              />
-            </div>
-          ) : (
-            <div
-              key={i}
-              className="bg-gradient-to-br from-garden-200 to-garden-400"
-            />
-          )
-        )}
-      </div>
+      <HomePhotoStrip photos={uploadPhotos} />
 
       {/* ── Blog posts ── */}
       <section className="bg-surface max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-14">
