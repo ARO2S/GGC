@@ -29,6 +29,10 @@ async function getProgram(slug: string) {
     location: data.location || '',
     address: data.address || '',
     description: data.description || '',
+    presenter: data.presenter || null,
+    refreshments: data.refreshments || null,
+    notes: data.notes || null,
+    lawnChairBloom: data.lawnChairBloom || false,
     blogSlug: data.blogSlug || null,
     pdf: data.pdf || null,
     images: data.images || [],
@@ -74,6 +78,8 @@ export default async function ProgramDetail({ params }: ProgramDetailProps) {
       })
     : '';
 
+  const isPast = program.date ? new Date(program.date) < new Date() : false;
+
   return (
     <div className="bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -90,9 +96,11 @@ export default async function ProgramDetail({ params }: ProgramDetailProps) {
 
         {/* Header */}
         <div className="mb-8">
-          <div className="inline-block bg-garden-100 text-garden-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-            Past Event
-          </div>
+          {isPast && (
+            <div className="inline-block bg-garden-100 text-garden-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              Past Event
+            </div>
+          )}
           <h1 className="text-4xl font-bold text-garden-800 mb-4">{program.title}</h1>
 
           <div className="flex flex-wrap gap-5 text-gray-600 text-sm mb-4">
@@ -117,6 +125,28 @@ export default async function ProgramDetail({ params }: ProgramDetailProps) {
 
           {program.description && (
             <p className="text-lg text-gray-700">{program.description}</p>
+          )}
+
+          {program.presenter && (
+            <p className="text-sm text-gray-700 mt-2">
+              <span className="font-semibold text-garden-700">Presenter:</span> {program.presenter}
+            </p>
+          )}
+
+          {program.refreshments && (
+            <p className="text-sm text-gray-700 mt-1">
+              <span className="font-semibold text-garden-700">Refreshments:</span> {program.refreshments}
+            </p>
+          )}
+
+          {program.notes && (
+            <p className="text-sm text-gray-600 italic mt-2">{program.notes}</p>
+          )}
+
+          {program.lawnChairBloom && (
+            <p className="mt-3 inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">
+              Bring a lawn chair and a Bloom
+            </p>
           )}
         </div>
 

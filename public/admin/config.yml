@@ -33,10 +33,14 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Time", name: "time", widget: "string", required: false }
       - { label: "Location", name: "location", widget: "string" }
       - { label: "Address", name: "address", widget: "string", required: false }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Presenter", name: "presenter", widget: "string", required: false }
+      - { label: "Refreshments", name: "refreshments", widget: "string", required: false }
+      - { label: "Notes", name: "notes", widget: "text", required: false }
+      - { label: "Bring a Lawn Chair and a Bloom", name: "lawnChairBloom", widget: "boolean", required: false, default: false }
       - { label: "Body", name: "body", widget: "markdown", required: false }
       - { label: "Linked Blog Post Slug", name: "blogSlug", widget: "string", required: false, hint: "Slug of a blog post to show as an Event Recap on this program's page (e.g. 2025-06-10-potluck-recap)" }
       - { label: "PDF", name: "pdf", widget: "string", required: false, hint: "Path to a PDF file (e.g. /programs/my-event.pdf)" }
@@ -50,10 +54,14 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Time", name: "time", widget: "string", required: false }
       - { label: "Location", name: "location", widget: "string" }
       - { label: "Address", name: "address", widget: "string", required: false }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Presenter", name: "presenter", widget: "string", required: false }
+      - { label: "Refreshments", name: "refreshments", widget: "string", required: false }
+      - { label: "Notes", name: "notes", widget: "text", required: false }
+      - { label: "Bring a Lawn Chair and a Bloom", name: "lawnChairBloom", widget: "boolean", required: false, default: false }
       - { label: "Body", name: "body", widget: "markdown", required: false }
       - { label: "Linked Blog Post Slug", name: "blogSlug", widget: "string", required: false, hint: "Slug of a blog post to show as an Event Recap on this program's page (e.g. 2026-04-20-potluck-recap)" }
       - { label: "PDF", name: "pdf", widget: "string", required: false, hint: "Path to a PDF file (e.g. /programs/my-event.pdf)" }
