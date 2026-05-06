@@ -14,6 +14,7 @@ export default function Navigation() {
     { name: 'Blog', href: '/blog' },
     { name: 'Plant Questions', href: '/plant-questions' },
     { name: 'Annual Booklet', href: '/booklet' },
+    { name: 'Merch', href: '/merch' },
   ];
 
   return (
