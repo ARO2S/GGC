@@ -20,6 +20,7 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.thegreenvillegardenclub.com'),
   title: "Greenville Garden Club",
   description: "An active gardening community with programs and activities for all levels of interest and experience.",
   openGraph: {

@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 import Link from 'next/link';
+import { getPhotosByTag, formatTagLabel } from '@/lib/gallery';
 
 interface ProgramDetailProps {
   params: Promise<{ slug: string }>;
@@ -36,6 +37,7 @@ async function getProgram(slug: string) {
     blogSlug: data.blogSlug || null,
     pdf: data.pdf || null,
     images: data.images || [],
+    galleryTag: data.galleryTag || null,
     contentHtml,
   };
 }
@@ -68,6 +70,7 @@ export default async function ProgramDetail({ params }: ProgramDetailProps) {
   if (!program) notFound();
 
   const blogPost = program.blogSlug ? await getBlogPost(program.blogSlug) : null;
+  const eventPhotos = program.galleryTag ? getPhotosByTag(program.galleryTag) : [];
 
   const formattedDate = program.date
     ? new Date(program.date).toLocaleDateString('en-US', {
@@ -191,6 +194,32 @@ export default async function ProgramDetail({ params }: ProgramDetailProps) {
                 className="w-full rounded-lg object-cover"
               />
             ))}
+          </div>
+        )}
+
+        {/* Event photos from gallery */}
+        {eventPhotos.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-garden-800">Event Photos</h2>
+              <Link
+                href={`/gallery/${program.galleryTag}`}
+                className="text-sm text-garden-600 hover:text-garden-700 font-semibold transition-colors"
+              >
+                View all ({eventPhotos.length}) →
+              </Link>
+            </div>
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-3 space-y-3">
+              {eventPhotos.map((photo) => (
+                <div key={photo.slug} className="break-inside-avoid rounded-lg overflow-hidden shadow-sm">
+                  <img
+                    src={photo.image}
+                    alt={photo.title || formatTagLabel(program.galleryTag!)}
+                    className="w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

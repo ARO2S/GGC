@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 import Link from 'next/link';
+import { getPhotosByTag, formatTagLabel } from '@/lib/gallery';
 
 interface BlogPostProps {
   params: Promise<{
@@ -34,6 +35,7 @@ async function getPost(slug: string) {
     date: data.date || new Date().toISOString(),
     author: data.author,
     image: data.image,
+    galleryTag: data.galleryTag || null,
     contentHtml,
   };
 }
@@ -61,6 +63,8 @@ export default async function BlogPost({ params }: BlogPostProps) {
   if (!post) {
     notFound();
   }
+
+  const eventPhotos = post.galleryTag ? getPhotosByTag(post.galleryTag) : [];
 
   return (
     <div className="bg-white">
@@ -109,10 +113,36 @@ export default async function BlogPost({ params }: BlogPostProps) {
           </div>
         </div>
 
-        <div 
+        <div
           className="prose prose-lg max-w-none prose-headings:text-garden-800 prose-a:text-garden-600 hover:prose-a:text-garden-700"
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
+
+        {/* Event photos from gallery */}
+        {eventPhotos.length > 0 && (
+          <div className="mt-12 pt-10 border-t border-garden-100">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-2xl font-bold text-garden-800 font-playfair">Event Photos</h2>
+              <Link
+                href={`/gallery/${post.galleryTag}`}
+                className="text-sm text-garden-600 hover:text-garden-700 font-semibold transition-colors"
+              >
+                View all ({eventPhotos.length}) →
+              </Link>
+            </div>
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-3 space-y-3">
+              {eventPhotos.map((photo) => (
+                <div key={photo.slug} className="break-inside-avoid rounded-lg overflow-hidden shadow-sm">
+                  <img
+                    src={photo.image}
+                    alt={photo.title || formatTagLabel(post.galleryTag!)}
+                    className="w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </article>
     </div>
   );
