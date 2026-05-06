@@ -7,6 +7,7 @@ address: Greenville, IL
 description: Rooted Again — Restoring the Illinois State Tree to Greenville
 blogSlug: 2026-03-20-white-oak-dedication-ceremony
 pdf: /programs/white-oak-dedication-ceremony.pdf
+galleryTag: 2026-white-oak-dedication-ceremony
 ---
 
 *Dedicated to the memory of two white oaks lost to the tornado of 2025 and honoring the 250th anniversary of our nation.*

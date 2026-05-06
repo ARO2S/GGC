@@ -7,4 +7,5 @@ description: "Our regular April meeting with the executive committee."
 presenter: "Executive Committee"
 refreshments: "The Greenville Garden Club"
 blogSlug: "2026-04-20-spring-potluck"
+galleryTag: "2026-spring-potluck"
 ---
