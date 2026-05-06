@@ -7,4 +7,6 @@ description: "A guided tour of Meyer's Nursery followed by lunch in Nashville."
 presenter: "On Your Own"
 refreshments: "Eat in Nashville – Bonnie's"
 notes: "Meet at First United Methodist at 9:00 for Car Pool"
+blogSlug: "2026-04-28-Meyers-Tour"
+galleryTag: "2026-meyers-tour"
 ---
