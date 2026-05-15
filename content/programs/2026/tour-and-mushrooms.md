@@ -6,4 +6,6 @@ address: "414 Eastern, Greenville"
 description: "A garden tour and presentation on mushroom cultivation hosted by Carla and Randy Smith."
 presenter: "Randy Smith"
 lawnChairBloom: true
+blogSlug: "2026-05-12-MayMeeting"
+galleryTag: "2026-MayMeeting"
 ---
