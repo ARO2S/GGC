@@ -7,4 +7,6 @@ description: "Members bring their favorite house plants and share growing tips w
 presenter: "Members – Show and Tell"
 notes: "Members are to bring their favorite House Plant and share your tips on growing."
 lawnChairBloom: true
+blogSlug: "2026-05-26-ShowAndTell"
+galleryTag: "2026-May-ShowAndTell"
 ---
