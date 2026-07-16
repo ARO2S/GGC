@@ -23,6 +23,11 @@ collections:
       - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Gallery Tag", name: "galleryTag", widget: "string", required: false, hint: "Photos tagged with this value will appear as Event Photos at the bottom of this post. Convention: YEAR-short-name (e.g. 2026-spring-potluck)" }
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        hint: "Category tags for filtering blog posts (e.g. Community Involvement, Blooms, Events)"
       - { label: "Body", name: "body", widget: "markdown" }
 
   # 2025 Programs Collection

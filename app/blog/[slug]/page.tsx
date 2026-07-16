@@ -36,6 +36,7 @@ async function getPost(slug: string) {
     author: data.author,
     image: data.image,
     galleryTag: data.galleryTag || null,
+    tags: (data.tags as string[]) || [],
     contentHtml,
   };
 }
@@ -98,10 +99,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
           
           <div className="flex items-center text-gray-600">
             <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              {new Date(post.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               })}
             </time>
             {post.author && (
@@ -111,6 +112,19 @@ export default async function BlogPost({ params }: BlogPostProps) {
               </>
             )}
           </div>
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {post.tags.map(tag => (
+                <Link
+                  key={tag}
+                  href={`/blog?tag=${encodeURIComponent(tag)}`}
+                  className="text-xs px-3 py-1 rounded-full bg-garden-100 text-garden-700 hover:bg-garden-200 transition-colors font-medium"
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         <div

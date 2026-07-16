@@ -3,6 +3,8 @@ title: "Rooted Again: White Oak Dedication Ceremony at the Bond County Courthous
 date: 2026-03-25T15:00:00.000-04:00
 author: Stephen Ross
 image: https://wgel.com/wp-content/uploads/2026/03/IMG_8138.jpg
+tags:
+  - "Community Involvement"
 ---
 
 Restoring the Illinois State Tree
