@@ -6,4 +6,5 @@ address: "10101 Slant Rd, Carlyle"
 description: "A visit to Voss Pecan Orchard for a look at pecan farming with Ralph and Karen Voss."
 presenter: "Ralph & Karen Voss"
 lawnChairBloom: true
+blogSlug: "2026-08-29-Voss-Pecan-Farm-Tour"
 ---
