@@ -6,6 +6,7 @@ excerpt: "The Greenville Garden Club has pledged $5,000 over five years toward t
 image: "/images/uploads/LibraryProject1.jpg"
 tags:
   - "Community Involvement"
+  - "Donation"
 ---
 
 The Greenville Garden Club is proud to be part of one of the most exciting projects coming to our community — a brand new Greenville Public Library.
